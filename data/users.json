@@ -1,0 +1,34 @@
+[
+  {
+    "username": "Admin",
+    "passwordHash": "$2b$10$9IMKoby25KgwB4JNxS64ieWl8xvJuUvsA.1fKo9hcMPaBifDYRBWy",
+    "role": "admin",
+    "avatar": "/avatars/gallo_claudio.png",
+    "isMaster": true,
+    "createdAt": "2026-10-20T10:00:00.000Z"
+  },
+  {
+    "username": "Locutor_Matias",
+    "passwordHash": "$2b$10$NetcoYhCMXAqpmdKDH7mqOOfk5ot.xGvWYoz7jLowHG7EBw/2rHl2",
+    "role": "moderator",
+    "avatar": "/avatars/gallo_claudio.png",
+    "isMaster": false,
+    "createdAt": "2026-10-20T13:25:38.398Z"
+  },
+  {
+    "username": "AdminRadio",
+    "passwordHash": "$2b$10$RwmzaJCAVL5u763pwMyzMOw69uiSI6UEWTv3LQ.3KlUIg/1g76ag6",
+    "role": "admin",
+    "avatar": "/avatars/gallo_claudio.png",
+    "isMaster": false,
+    "createdAt": "2026-10-20T13:34:13.874Z"
+  },
+  {
+    "username": "Ferwe",
+    "passwordHash": "$2b$10$u3Vs00M37O9l.ZHeRkvCUO2VPn0FFRwKtdiwdbxVu8e.Xy0HDdnfG",
+    "role": "moderator",
+    "avatar": "/avatars/gallo_claudio.png",
+    "isMaster": false,
+    "createdAt": "2026-10-20T13:34:37.519Z"
+  }
+]

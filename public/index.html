@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TKD Radio Online - Chat en Vivo</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Main Container -->
+  <div class="chat-wrapper" id="chatWrapper">
+
+    <!-- Top Navigation Header -->
+    <header class="chat-header">
+      <div class="header-brand">
+        <div class="radio-logo-badge">
+          <span class="pulse-indicator"></span>
+          <span class="brand-text">TKD RADIO</span>
+        </div>
+        <div class="live-pill" id="livePill">
+          <span class="dot"></span>
+          <span class="live-text">AL AIRE</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Online Users Badge -->
+        <div class="online-pill" id="onlinePill" title="Oyentes conectados">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          <span id="onlineCount">0</span>
+        </div>
+
+        <!-- Sound Toggle -->
+        <button class="icon-btn" id="soundBtn" title="Activar/Silenciar sonido de mensajes">
+          <svg id="soundIconOn" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          </svg>
+          <svg id="soundIconOff" class="icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="23" y1="9" x2="17" y2="15"></line>
+            <line x1="17" y1="9" x2="23" y2="15"></line>
+          </svg>
+        </button>
+
+        <!-- Master Admin Team Manager Button (hidden by default) -->
+        <button class="action-pill master-pill hidden" id="masterTeamBtn" title="Gestionar Equipo de Moderadores">
+          👑 Equipo
+        </button>
+
+        <!-- Cabin / Mod Controls Button (hidden by default) -->
+        <button class="action-pill cabin-pill hidden" id="cabinControlBtn" title="Panel de Control de Cabina">
+          🎙️ Cabina
+        </button>
+
+        <!-- Staff Login Trigger Button (visible when not logged in as staff) -->
+        <button class="login-trigger-btn" id="loginTriggerBtn">
+          Acceso Cabina
+        </button>
+
+        <!-- Current User Avatar / Status (visible when connected) -->
+        <div class="user-status-pill hidden" id="userStatusPill">
+          <img id="myAvatarImg" src="/avatars/gallo_claudio.png" alt="Avatar" class="user-pill-avatar">
+          <span id="myUsernameText" class="user-pill-name">Usuario</span>
+          <span id="myRoleBadge" class="badge-tag listener">Oyente</span>
+          <button class="logout-pill-btn" id="logoutBtn" title="Salir de la sala / Cerrar sesión">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Paused Chat Warning Banner -->
+    <div class="chat-paused-banner hidden" id="chatPausedBanner">
+      ⚠️ El chat al aire ha sido pausado temporalmente por la cabina de locución.
+    </div>
+
+    <!-- Messages Container -->
+    <main class="chat-messages" id="chatMessages">
+      <div class="welcome-chat-bubble">
+        <div class="welcome-icon">📻</div>
+        <div class="welcome-title">¡Bienvenidos al Chat de TKD Radio Online!</div>
+        <div class="welcome-desc">Participá del programa en vivo, saludá a los locutores y compartí la mejor música y buena onda.</div>
+      </div>
+    </main>
+
+    <!-- Chat Input Area -->
+    <footer class="chat-input-bar" id="chatInputBar">
+      <div class="input-container">
+        <!-- Emoji Button -->
+        <button class="icon-btn emoji-toggle-btn" id="emojiToggleBtn" type="button" title="Insertar Emojis">
+          😊
+        </button>
+
+        <!-- Text Input -->
+        <input 
+          type="text" 
+          id="messageInput" 
+          placeholder="Escribí tu mensaje al aire..." 
+          maxlength="300"
+          autocomplete="off"
+        >
+
+        <!-- Send Button -->
+        <button class="send-btn" id="sendBtn" type="button" title="Enviar mensaje">
+          <svg class="send-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Quick Emoji Picker Popup -->
+      <div class="emoji-picker-popup hidden" id="emojiPickerPopup">
+        <div class="emoji-grid">
+          <button type="button" class="emoji-btn">❤️</button>
+          <button type="button" class="emoji-btn">🔥</button>
+          <button type="button" class="emoji-btn">👏</button>
+          <button type="button" class="emoji-btn">📻</button>
+          <button type="button" class="emoji-btn">🎶</button>
+          <button type="button" class="emoji-btn">🎧</button>
+          <button type="button" class="emoji-btn">🥋</button>
+          <button type="button" class="emoji-btn">🥳</button>
+          <button type="button" class="emoji-btn">😂</button>
+          <button type="button" class="emoji-btn">👍</button>
+          <button type="button" class="emoji-btn">⭐</button>
+          <button type="button" class="emoji-btn">⚡</button>
+          <button type="button" class="emoji-btn">😎</button>
+          <button type="button" class="emoji-btn">🙌</button>
+          <button type="button" class="emoji-btn">💪</button>
+          <button type="button" class="emoji-btn">🎉</button>
+        </div>
+      </div>
+
+      <div class="input-info-row">
+        <span class="slowmode-indicator hidden" id="slowModeIndicator">⏱️ Modo lento activo</span>
+        <span class="char-count" id="charCount">0/300</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- MODAL 1: Entrada al Chat (Oyentes y Acceso Cabina) -->
+  <div class="modal-overlay" id="joinModalOverlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-logo-wrap">
+          <span class="pulse-indicator"></span>
+          <h2>TKD RADIO CHAT</h2>
+        </div>
+        <p class="modal-subtitle">Elegí tu personaje para sumarte a la transmisión en vivo</p>
+      </div>
+
+      <!-- Tabs: Oyente / Cabina -->
+      <div class="modal-tabs">
+        <button class="tab-btn active" id="tabListenerBtn">🎧 Soy Oyente</button>
+        <button class="tab-btn" id="tabStaffBtn">🎙️ Acceso Cabina</button>
+      </div>
+
+      <!-- Tab Content 1: Oyente -->
+      <div class="tab-content" id="tabListenerContent">
+        <div class="form-group">
+          <label for="nicknameInput">Tu Apodo o Nombre:</label>
+          <input type="text" id="nicknameInput" placeholder="Ej: Lucas_Wilde" maxlength="25" autofocus>
+        </div>
+
+        <div class="form-group">
+          <label>Elegí tu personaje animado:</label>
+          <div class="avatar-selector-grid">
+            <div class="avatar-option selected" data-avatar="/avatars/gallo_claudio.png" title="Gallo Claudio">
+              <img src="/avatars/gallo_claudio.png" alt="Gallo Claudio">
+              <span class="avatar-name">Gallo Claudio</span>
+            </div>
+            <div class="avatar-option" data-avatar="/avatars/conejo_bugs.jpg" title="Conejo Bugs">
+              <img src="/avatars/conejo_bugs.jpg" alt="Conejo Bugs">
+              <span class="avatar-name">Bugs</span>
+            </div>
+            <div class="avatar-option" data-avatar="/avatars/pato_lucas.jpg" title="Pato Lucas">
+              <img src="/avatars/pato_lucas.jpg" alt="Pato Lucas">
+              <span class="avatar-name">Lucas</span>
+            </div>
+            <div class="avatar-option" data-avatar="/avatars/perro_dj.jpg" title="Perro DJ">
+              <img src="/avatars/perro_dj.jpg" alt="Perro DJ">
+              <span class="avatar-name">Radio DJ</span>
+            </div>
+            <div class="avatar-option" data-avatar="/avatars/gato_cool.jpg" title="Gato Cool">
+              <img src="/avatars/gato_cool.jpg" alt="Gato Cool">
+              <span class="avatar-name">Gato Cool</span>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn btn-primary btn-block" id="joinAsListenerBtn">
+          🚀 Ingresar a la Sala
+        </button>
+      </div>
+
+      <!-- Tab Content 2: Staff Login -->
+      <div class="tab-content hidden" id="tabStaffContent">
+        <div class="form-group">
+          <label for="staffUserInput">Usuario de Cabina:</label>
+          <input type="text" id="staffUserInput" placeholder="Ej: Admin" value="Admin">
+        </div>
+        <div class="form-group">
+          <label for="staffPassInput">Contraseña:</label>
+          <input type="password" id="staffPassInput" placeholder="Contraseña de cabina">
+        </div>
+        <div class="alert-box error hidden" id="staffLoginError"></div>
+        <button class="btn btn-gold btn-block" id="staffLoginBtn">
+          🎙️ Conectar a la Cabina
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Panel de Cabina (Control de chat y foto personalizada) -->
+  <div class="modal-overlay hidden" id="cabinModalOverlay">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title-row">
+          <h3>🎙️ Panel de Cabina de Locución</h3>
+          <button class="close-modal-btn" id="closeCabinModalBtn">&times;</button>
+        </div>
+        <p class="modal-subtitle">Control de transmisión y moderación en vivo</p>
+      </div>
+
+      <!-- Chat State Toggle -->
+      <div class="control-section">
+        <div class="toggle-row">
+          <div>
+            <strong>Estado del Chat en Vivo</strong>
+            <p class="section-desc">Permite o pausa la escritura de mensajes al aire para los oyentes.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="chatActiveToggle" checked>
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Slow Mode Selector -->
+      <div class="control-section">
+        <label for="slowModeSelect"><strong>⏱️ Modo Lento (Anti-Spam)</strong></label>
+        <p class="section-desc">Demora obligatoria entre mensajes para evitar avalanchas.</p>
+        <select id="slowModeSelect" class="form-select">
+          <option value="0">Desactivado (Normal)</option>
+          <option value="3">3 segundos</option>
+          <option value="5">5 segundos</option>
+          <option value="10">10 segundos</option>
+        </select>
+      </div>
+
+      <!-- Custom Profile Picture Upload -->
+      <div class="control-section">
+        <strong>📸 Tu Foto de Perfil de Cabina</strong>
+        <p class="section-desc">Subí tu foto personalizada para destacar como locutor/moderador al aire.</p>
+        <div class="upload-avatar-row">
+          <img id="staffCurrentAvatarPreview" src="/avatars/gallo_claudio.png" class="staff-preview-avatar" alt="Avatar">
+          <div class="upload-controls">
+            <input type="file" id="staffAvatarFileInput" accept="image/png, image/jpeg, image/webp" class="hidden">
+            <button class="btn btn-secondary" id="triggerUploadBtn">Elegir Imagen...</button>
+            <span id="uploadFileName" class="upload-filename">Ningún archivo elegido</span>
+          </div>
+        </div>
+        <button class="btn btn-cyan btn-sm mt-2 hidden" id="saveAvatarUploadBtn">Guardar y Aplicar Foto</button>
+      </div>
+
+      <!-- Clear Chat Action -->
+      <div class="control-section">
+        <strong>🧹 Pánico / Limpieza</strong>
+        <p class="section-desc">Borra todos los mensajes visibles de la sala para arrancar de cero.</p>
+        <button class="btn btn-danger btn-block" id="clearChatBtn">Limpiar Sala Completa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: Gestión de Equipo (Solo Super Admin) -->
+  <div class="modal-overlay hidden" id="teamModalOverlay">
+    <div class="modal-card modal-large">
+      <div class="modal-header">
+        <div class="modal-title-row">
+          <h3>👑 Gestión de Equipo y Locutores</h3>
+          <button class="close-modal-btn" id="closeTeamModalBtn">&times;</button>
+        </div>
+        <p class="modal-subtitle">Creá y administrá las cuentas de locución y moderación</p>
+      </div>
+
+      <!-- Add New Staff Form -->
+      <div class="create-staff-box">
+        <h4>➕ Crear Nuevo Integrante</h4>
+        <div class="staff-form-grid">
+          <div class="form-group">
+            <label>Nombre / Usuario:</label>
+            <input type="text" id="newStaffUser" placeholder="Ej: Locutor_Matias">
+          </div>
+          <div class="form-group">
+            <label>Contraseña:</label>
+            <input type="password" id="newStaffPass" placeholder="Mínimo 5 letras">
+          </div>
+          <div class="form-group">
+            <label>Rol:</label>
+            <select id="newStaffRole" class="form-select">
+              <option value="admin">Locutor / Administrador</option>
+              <option value="moderator">Moderador de Sala</option>
+            </select>
+          </div>
+        </div>
+        <div class="alert-box success hidden" id="createStaffSuccess"></div>
+        <div class="alert-box error hidden" id="createStaffError"></div>
+        <button class="btn btn-primary" id="saveNewStaffBtn">Crear Cuenta</button>
+      </div>
+
+      <!-- Staff List -->
+      <div class="staff-list-section">
+        <h4>Cuentas Actuales de Cabina</h4>
+        <div class="staff-list-grid" id="staffListContainer">
+          <!-- Loaded via Socket.IO -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Socket.IO Client Script -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- Main Application Script -->
+  <script src="/js/app.js"></script>
+</body>
+</html>
